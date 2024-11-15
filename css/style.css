@@ -1,0 +1,14 @@
+.titulo_tabla {
+    display: flex; justify-content: space-between;
+
+    .boton { 
+        margin: 4px 0;
+    }
+}
+
+
+table th:last-child, table td:last-child {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;  /* Centra los botones */
+}
