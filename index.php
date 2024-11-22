@@ -34,10 +34,10 @@ $resultado = $mysqli->query($sql);
 		<div class="container mt-5">
 		<div class="titulo_tabla">
 			<h2>Bicicletas en Venta</h2>
-			<a href="registrar.php" class="btn btn-primary boton">Registrate</a>
+			<a href="registrarBicicleta.php" class="btn btn-primary boton">Registrate</a>
 			</div>
 			<?php
-			$sql = "SELECT ID_Bicicleta, Marca, Modelo, Tipo, Precio FROM Bicicletas WHERE ID_Cliente IS NULL";
+			$sql = "SELECT ID_Bicicleta, Marca, Modelo, Tipo, Precio, stock FROM Bicicletas WHERE ID_Cliente IS NULL";
 			$result = $mysqli->query($sql);
 			?>
 			<table class="table table-striped table-bordered">
@@ -46,6 +46,7 @@ $resultado = $mysqli->query($sql);
 						<th>Marca</th>
 						<th>Modelo</th>
 						<th>Tipo</th>
+						<th>Stock</th>
 						<th>Precio</th>
 						<th>Acciones</th>
 					</tr>
@@ -56,6 +57,7 @@ $resultado = $mysqli->query($sql);
 							<td><?= htmlspecialchars($row['Marca']) ?></td>
 							<td><?= htmlspecialchars($row['Modelo']) ?></td>
 							<td><?= htmlspecialchars($row['Tipo']) ?></td>
+							<td><?= htmlspecialchars($row['stock']) ?></td>
 							<td><?= htmlspecialchars(string: $row['Precio']) ?></td>
 							<td><a href="editarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-primary" >Editar</a>  <a href="eliminarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-danger" >Eliminar</a></td>
 						</tr>
@@ -103,7 +105,7 @@ $resultado = $mysqli->query($sql);
 		<div class="container">
 		<div class="titulo_tabla">
 			<h2>Servicios Ofrecidos</h2>
-			<a href="registrar.php" class="btn btn-primary boton">Registrate</a>
+			<a href="preguntaServicios.php" class="btn btn-primary boton">Registrate</a>
 			</div>
 			<?php
 			$sqlServicios = "SELECT ID_Servicio, Descripcion, Precio FROM Servicios";

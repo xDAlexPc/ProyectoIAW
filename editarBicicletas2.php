@@ -15,8 +15,9 @@
 			$modelo = $_POST['modelo'];
 			$tipo = $_POST['tipo'];
 			$precio = $_POST['precio'];
+			$stock = $_POST['stock'];
 			require 'conexion.php';
-			$sql = "UPDATE bicicletas SET Marca='$marca', Modelo='$modelo', Tipo='$tipo', Precio='$precio' WHERE ID_Bicicleta=$id";
+			$sql = "UPDATE bicicletas SET Marca='$marca', Modelo='$modelo', Tipo='$tipo', Precio='$precio', stock='$stock' WHERE ID_Bicicleta=$id";
 			$resultado = $mysqli->query($sql);
 
 			if($resultado>0){

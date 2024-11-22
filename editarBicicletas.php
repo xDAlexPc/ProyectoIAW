@@ -45,6 +45,11 @@
                     </div>
                     
                     <div class="form-group">
+                        <label for="stock">Stock</label>
+                        <input type="number" name="stock" id="stock" class="form-control" placeholder="Introduce la cantidad en stock" value="<?php echo $fila['stock']; ?>" required>
+                    </div>
+                    
+                    <div class="form-group">
                         <input type="submit" value="Editar" class="btn btn-primary">
                     </div>
                 </form>
