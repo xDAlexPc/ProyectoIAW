@@ -19,8 +19,8 @@
     $id_bicicleta = $_POST['id_bicicleta'];
     $id_bicicleta = !empty($_POST['id_bicicleta']) ? (int)$_POST['id_bicicleta'] : 'NULL';
 
-    $sql = "INSERT INTO servicios (Descripcion, Precio, ID_Bicicleta) 
-            VALUES ('$descripcion', '$precio', $id_bicicleta)";
+    $sql = "INSERT INTO servicios (Descripcion, Precio, ID_Bicicleta, Fecha) 
+            VALUES ('$descripcion', '$precio', $id_bicicleta, NOW())";
 
     $resultado = $mysqli->query($sql);
 

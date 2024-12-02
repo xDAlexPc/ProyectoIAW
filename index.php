@@ -1,6 +1,8 @@
 <?php
 require 'conexion.php';
-$sql = "SELECT * FROM proyectoiaw";
+$sql = "SELECT ID_Bicicleta, Marca, Modelo, Tipo, Precio, stock 
+        FROM Bicicletas 
+        WHERE ID_Cliente IS NULL OR stock > 1";
 $resultado = $mysqli->query($sql);
 ?>
 
@@ -28,19 +30,15 @@ $resultado = $mysqli->query($sql);
 
 <body>
 	<div class="container">
-		<div class="row" >
+		<div class="row">
 			<h1>ReparaBike</h1>
 		</div>
 		<br>
 		<div class="container mt-5">
 			<div class="titulo_tabla">
 				<h2>Bicicletas en Venta</h2>
-				<a href="registrarBicicleta.php" class="btn btn-primary boton">Registrate</a>
+				<a href="registrarBicicleta.php" class="btn btn-primary boton">Añadir</a>
 			</div>
-			<?php
-			$sql = "SELECT ID_Bicicleta, Marca, Modelo, Tipo, Precio, stock FROM Bicicletas WHERE ID_Cliente IS NULL";
-			$result = $mysqli->query($sql);
-			?>
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
@@ -53,14 +51,15 @@ $resultado = $mysqli->query($sql);
 					</tr>
 				</thead>
 				<tbody>
-					<?php while ($row = $result->fetch_assoc()): ?>
+					<?php while ($row = $resultado->fetch_assoc()): ?>
 						<tr>
 							<td><?= htmlspecialchars($row['Marca']) ?></td>
 							<td><?= htmlspecialchars($row['Modelo']) ?></td>
 							<td><?= htmlspecialchars($row['Tipo']) ?></td>
 							<td><?= htmlspecialchars($row['stock']) ?></td>
-							<td><?= htmlspecialchars(string: $row['Precio']) ?></td>
-							<td><a href="editarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-primary">Editar</a> <a href="eliminarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-danger">Eliminar</a></td>
+							<td><?= htmlspecialchars($row['Precio']) ?></td>
+							<td><a href="editarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-primary">Editar</a> 
+                                <a href="eliminarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-danger">Eliminar</a></td>
 						</tr>
 					<?php endwhile; ?>
 				</tbody>
@@ -73,7 +72,7 @@ $resultado = $mysqli->query($sql);
 		<div class="container">
 			<div class="titulo_tabla">
 				<h2>Clientes</h2>
-				<a href="registrar.php" class="btn btn-primary boton">Registrate</a>
+				<a href="registrar.php" class="btn btn-primary boton">Añadir</a>
 			</div>
 			<?php
 			$sqlClientes = "SELECT ID_Cliente, Nombre, Telefono, Email, Contraseña FROM Clientes";
@@ -106,7 +105,7 @@ $resultado = $mysqli->query($sql);
 		<div class="container">
 			<div class="titulo_tabla">
 				<h2>Servicios Ofrecidos</h2>
-				<a href="registrarServicios.php" class="btn btn-primary boton">Registrate</a>
+				<a href="registrarServicios.php" class="btn btn-primary boton">Añadir</a>
 			</div>
 			<?php
 			$sqlServicios = "SELECT ID_Servicio, Descripcion, Precio FROM Servicios";
@@ -170,7 +169,7 @@ $resultado = $mysqli->query($sql);
 		<div class="container">
 			<div class="titulo_tabla">
 				<h2>Operaciones</h2>
-				<a href="registrarOperacion.php" class="btn btn-primary boton">Registrate</a>
+				<a href="registrarOperacion.php" class="btn btn-primary boton">Añadir</a>
 			</div>
 			<?php
 			$sqloperaciones =

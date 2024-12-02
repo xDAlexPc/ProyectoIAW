@@ -1,3 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReparaBike</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="icon" href="images/iconoBici.jpeg" type="image/jpeg">
+    
+<style>
+    body {
+        background: url('images/fondo.jpg') no-repeat center center fixed;
+        background-size: cover;
+        margin: 0; 
+    }
+</style>
+
+    
+<style>
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+</head>
+<body>
+
 <?php
 require 'conexion.php';
 ?>
@@ -17,7 +47,8 @@ require 'conexion.php';
         </div>
         <div class="row">
             <div class="col-md-8">
-                <form id="registroOperacion" name="registroOperacion" autocomplete="off" action="registrarOperacion2.php" method="post">
+                <div class="form-container">
+<form id="registroOperacion" name="registroOperacion" autocomplete="off" action="registrarOperacion2.php" method="post">
                     <div class="form-group">
                         <label for="tipo">Tipo de Operación</label>
                         <select name="tipo" id="tipo" class="form-control" required>
@@ -32,7 +63,7 @@ require 'conexion.php';
                         <select name="id_bicicleta" id="id_bicicleta" class="form-control" required>
                             <option value="">-- Selecciona una bicicleta --</option>
                             <?php
-                            // Obtener bicicletas de la base de datos
+
                             $sql = "SELECT id_bicicleta, Marca, Modelo, Precio, Stock FROM bicicletas";
                             $resultado = $mysqli->query($sql);
 
@@ -61,12 +92,12 @@ require 'conexion.php';
                         <small id="stockDisponible" class="form-text text-muted"></small>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="clienteField" style="display: none;">
                         <label for="id_cliente">Cliente</label>
                         <select name="id_cliente" id="id_cliente" class="form-control">
-                            <option value="">-- Sin cliente --</option>
+                            <option value="">-- Selecciona un cliente --</option>
                             <?php
-                            // Obtener clientes de la base de datos
+ 
                             $sql = "SELECT id_cliente, Nombre FROM clientes";
                             $resultado = $mysqli->query($sql);
 
@@ -83,6 +114,7 @@ require 'conexion.php';
                         <input type="submit" value="Registrar Operación" class="btn btn-primary">
                     </div>
                 </form>
+</div>
             </div>
         </div>
     </div>
@@ -91,18 +123,59 @@ require 'conexion.php';
     <script src="js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
+            $('#tipo').on('change', function () {
+                const tipo = $(this).val();
+                
+
+                if (tipo === 'Venta') {
+                    $('#clienteField').show();
+                } else {
+                    $('#clienteField').hide();
+                }
+
+  
+                if (tipo === 'Compra') {
+                    $('#id_bicicleta option').each(function () {
+                        const stock = $(this).data('stock');
+                        if (stock < 5 || $(this).val() === "") {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                } else {
+  
+                    $('#id_bicicleta option').show();
+                }
+
+ 
+                $('#id_bicicleta').val('');
+                $('#precio').val('');
+                $('#cantidad').val('');
+                $('#stockDisponible').text('');
+            });
+
             $('#id_bicicleta').on('change', function () {
-                // Obtener los datos del precio y stock de la bicicleta seleccionada
                 const selectedOption = $(this).find(':selected');
                 const precio = selectedOption.data('precio') || 0;
                 const stock = selectedOption.data('stock') || 0;
+                const tipo = $('#tipo').val();
 
-                // Actualizar el campo de precio y el mensaje de stock disponible
                 $('#precio').val(precio);
-                $('#cantidad').attr('max', stock);
-                $('#stockDisponible').text(`Stock disponible: ${stock}`);
+
+                if (tipo === 'Venta') {
+                    $('#cantidad').attr('max', stock); 
+                    $('#stockDisponible').text(`Stock disponible: ${stock}`);
+                } else {
+                    $('#cantidad').removeAttr('max'); 
+                    $('#stockDisponible').text('');
+                }
             });
         });
     </script>
+</body>
+</html>
+
+
 </body>
 </html>
