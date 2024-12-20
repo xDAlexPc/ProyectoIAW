@@ -62,8 +62,8 @@
 						</div>
 						
 						<div class="form-group">
-							<label for="contraseña">Contraseña</label>
-							<input type="password" name="contraseña" id="contraseña" class="form-control" placeholder="Introduce tu contraseña" required>
+							<label for="dni">DNI</label>
+							<input type="dni" name="dni" id="dni" class="form-control" placeholder="Introduce tu DNI" required>
 						</div>
 
 						

@@ -13,10 +13,10 @@
 			$nombre = $_POST['nombre'];
 			$telefono = $_POST['telefono'];
 			$email = $_POST['email'];
-			$contraseña = $_POST['contraseña'];
+			$dni = $_POST['dni'];
 			
 			require 'conexion.php';
-			$sql = "INSERT INTO clientes (nombre,telefono,email,contraseña) VALUES ('$nombre','$telefono','$email','$contraseña')";
+			$sql = "INSERT INTO clientes (nombre,telefono,email,dni) VALUES ('$nombre','$telefono','$email','$dni')";
 
 			$resultado = $mysqli->query($sql);
 

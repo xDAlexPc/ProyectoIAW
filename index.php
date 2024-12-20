@@ -75,7 +75,7 @@ $resultado = $mysqli->query($sql);
 				<a href="registrar.php" class="btn btn-primary boton">Añadir</a>
 			</div>
 			<?php
-			$sqlClientes = "SELECT ID_Cliente, Nombre, Telefono, Email, Contraseña FROM Clientes";
+			$sqlClientes = "SELECT ID_Cliente, Nombre, Telefono, Email, DNI FROM Clientes";
 			$resultClientes = $mysqli->query($sqlClientes);
 			?>
 			<table class="table table-bordered table-striped">
@@ -84,7 +84,7 @@ $resultado = $mysqli->query($sql);
 						<th>Nombre</th>
 						<th>Teléfono</th>
 						<th>Email</th>
-						<th>Contraseña</th>
+						<th>DNI</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
@@ -94,7 +94,7 @@ $resultado = $mysqli->query($sql);
 							<td><?= htmlspecialchars($row['Nombre']) ?></td>
 							<td><?= htmlspecialchars($row['Telefono']) ?></td>
 							<td><?= htmlspecialchars($row['Email']) ?></td>
-							<td><?= str_repeat('*', strlen($row['Contraseña'])) ?></td>
+							<td><?= htmlspecialchars($row['DNI']) ?></td>
 							<td><a href="editarCliente.php?id=<?= $row['ID_Cliente'] ?>" class="btn btn-primary">Editar</a> <a href="eliminarCliente.php?id=<?= $row['ID_Cliente'] ?>" class="btn btn-danger">Eliminar</a></td>
 						</tr>
 					<?php endwhile; ?>
