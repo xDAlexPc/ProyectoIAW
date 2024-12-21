@@ -52,7 +52,7 @@
 
                     <div class="form-group">
                         <label for="precio">Precio</label>
-                        <input type="number" step="0.01" name="precio" id="precio" class="form-control" placeholder="Introduce el precio del servicio" required>
+                        <input type="number" step="0.01" name="precio" id="precio" min="0" class="form-control" placeholder="Introduce el precio del servicio" required>
                     </div>
 
                     <div class="form-group">

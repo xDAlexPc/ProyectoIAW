@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group">
                             <label for="precio">Precio</label>
-                            <input type="text" name="precio" id="precio" class="form-control" placeholder="Introduce el precio" value="<?php echo htmlspecialchars($fila['Precio']); ?>" required>
+                            <input type="number" name="precio" id="precio" min="0" class="form-control" placeholder="Introduce el precio" value="<?php echo htmlspecialchars($fila['Precio']); ?>" required>
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Actualizar Servicio" class="btn btn-primary">

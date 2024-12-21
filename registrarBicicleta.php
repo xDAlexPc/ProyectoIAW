@@ -67,12 +67,12 @@
 						
 						<div class="form-group">
 							<label for="precio">Precio</label>
-							<input type="number" name="precio" id="precio" class="form-control" placeholder="Introduce el precio de la bicicleta" required>
+							<input type="number" name="precio" id="precio" min="0" class="form-control" placeholder="Introduce el precio de la bicicleta" required>
 						</div>
 
                         <div class="form-group">
 							<label for="stock">Stock</label>
-							<input type="number" name="stock" id="stock" class="form-control" placeholder="Introduce la cantidad de bicicletas" required>
+							<input type="number" name="stock" id="stock" min="0" class="form-control" placeholder="Introduce la cantidad de bicicletas" required>
 						</div>
 						
                         <div class="form-group">
