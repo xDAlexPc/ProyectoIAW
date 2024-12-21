@@ -1,9 +1,17 @@
+<?php
+require 'conexion.php';
+$sql = "SELECT ID_Bicicleta, Marca, Modelo, Tipo, Precio, stock 
+        FROM Bicicletas 
+        WHERE ID_Cliente IS NULL OR stock > 1";
+$resultado = $mysqli->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReparaBike</title>
+    <title>ReparaBike - Bicicletas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="icon" href="images/iconoBici.jpeg" type="image/jpeg">
     <style>
@@ -58,14 +66,18 @@
             background-color: #f0f0f0;
         }
 
-        .carousel {
+        .content {
+            max-width: 1200px;
             margin: 20px auto;
-            max-width: 800px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .text-section {
+        h1 {
             text-align: center;
-            margin: 20px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -90,38 +102,41 @@
     <a href="operaciones.php">Operaciones</a>
 </div>
 
-<!-- Carrusel de imágenes -->
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+<!-- Contenido principal -->
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Bicicletas en Venta</h2>
+        <a href="registrarBicicleta.php" class="btn btn-primary">Añadir</a>
     </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="images/bicicleta1.jpg" class="d-block w-100" alt="Imagen 1">
-        </div>
-        <div class="carousel-item">
-            <img src="images/bicicleta2.jpg" class="d-block w-100" alt="Imagen 2">
-        </div>
-        <div class="carousel-item">
-            <img src="images/bicicleta3.jpg" class="d-block w-100" alt="Imagen 3">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Siguiente</span>
-    </button>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Tipo</th>
+                <th>Stock</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $resultado->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['Marca']) ?></td>
+                    <td><?= htmlspecialchars($row['Modelo']) ?></td>
+                    <td><?= htmlspecialchars($row['Tipo']) ?></td>
+                    <td><?= htmlspecialchars($row['stock']) ?></td>
+                    <td><?= htmlspecialchars($row['Precio']) ?></td>
+                    <td>
+                        <a href="editarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="eliminarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
 </div>
 
-<!-- Sección de texto -->
-<div class="text-section">
-    <p>Bienvenido a ReparaBike, el lugar ideal para encontrar y reparar tu bicicleta. Explora nuestras categorías de bicicletas, clientes y servicios desde el menú.</p>
-</div>
 
 <script>
     const menuToggle = document.getElementById('menuToggle');
