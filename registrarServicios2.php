@@ -85,23 +85,39 @@
 </script>
 <div class="container">
     <div class="form-container">
-        <?php
-        require 'conexion.php';
+    <?php
+require 'conexion.php';
 
-        $descripcion = $_POST['descripcion'];
-        $precio = $_POST['precio'];
+if (isset($_POST['descripcion'], $_POST['precio'], $_POST['id_bicicleta'])) {
+    $descripcion = $_POST['descripcion'];
+    $precio = $_POST['precio'];
+    $id_bicicleta = $_POST['id_bicicleta'];
 
-        $sql = "INSERT INTO Servicios (Descripcion, Precio) VALUES ('$descripcion', '$precio')";
-        $resultado = $mysqli->query($sql);
-        ?>
-        <div class="text-center mt-5">
-            <?php if ($resultado): ?>
-                <div class="alert alert-success">Servicio registrado con éxito.</div>
-            <?php else: ?>
-                <div class="alert alert-danger">Error al registrar el servicio.</div>
-            <?php endif; ?>
-            <a href="servicios.php" class="btn btn-primary">Regresar</a>
-        </div>
+    $sql = "INSERT INTO servicios (Descripcion, Precio, Fecha, ID_Bicicleta) VALUES (?, ?, NOW(), ?)";
+    $stmt = $mysqli->prepare($sql);
+    $stmt->bind_param("sdi", $descripcion, $precio, $id_bicicleta);
+
+    if ($stmt->execute()) {
+        // Update owner of the bicycle to reflect the new service
+        $updateOwnerSql = "UPDATE bicicletas SET ID_Cliente = 
+                           (SELECT ID_Cliente FROM bicicletas WHERE ID_Bicicleta = ?) 
+                           WHERE ID_Bicicleta = ?";
+        $stmtOwner = $mysqli->prepare($updateOwnerSql);
+        $stmtOwner->bind_param("ii", $id_bicicleta, $id_bicicleta);
+        $stmtOwner->execute();
+
+        echo "<div class='alert alert-success text-center'>Servicio registrado correctamente.</div>";
+    } else {
+        echo "<div class='alert alert-danger text-center'>Error al registrar el servicio.</div>";
+    }
+} else {
+    echo "<div class='alert alert-danger text-center'>Datos incompletos. Verifique e intente nuevamente.</div>";
+}
+?>
+<div class="text-center mt-3">
+    <a href="servicios.php" class="btn btn-primary">Regresar</a>
+</div>
+
     </div>
 </div>
 </body>
