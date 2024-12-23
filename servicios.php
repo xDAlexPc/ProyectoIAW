@@ -11,7 +11,7 @@ $resultado = $mysqli->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReparaBike - Bicicletas</title>
+    <title>ReparaBike - Servicios</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="icon" href="images/iconoBici.jpeg" type="image/jpeg">
     <style>
@@ -92,37 +92,67 @@ $resultado = $mysqli->query($sql);
 <!-- Contenido principal -->
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Bicicletas en Venta</h2>
-        <a href="registrarBicicleta.php" class="btn btn-primary">Añadir</a>
-    </div>
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Tipo</th>
-                <th>Stock</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $resultado->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['Marca']) ?></td>
-                    <td><?= htmlspecialchars($row['Modelo']) ?></td>
-                    <td><?= htmlspecialchars($row['Tipo']) ?></td>
-                    <td><?= htmlspecialchars($row['stock']) ?></td>
-                    <td><?= htmlspecialchars($row['Precio']) ?></td>
-                    <td>
-                        <a href="editarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-primary btn-sm">Editar</a>
-                        <a href="eliminarBicicletas.php?id=<?= $row['ID_Bicicleta'] ?>" class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-</div>
+				<h2>Servicios Ofrecidos</h2>
+				<a href="registrarServicios.php" class="btn btn-primary boton">Añadir</a>
+			</div>
+			<?php
+			$sqlServicios = "SELECT ID_Servicio, Descripcion, Precio FROM Servicios";
+			$resultServicios = $mysqli->query($sqlServicios);
+			?>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Descripción</th>
+						<th>Precio</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php while ($row = $resultServicios->fetch_assoc()): ?>
+						<tr>
+							<td><?= htmlspecialchars($row['Descripcion']) ?></td>
+							<td><?= htmlspecialchars($row['Precio']) ?></td>
+							<td><a href="editarServicios.php?id=<?= $row['ID_Servicio'] ?>" class="btn btn-primary">Editar</a> <a href="eliminarServicios.php?id=<?= $row['ID_Servicio'] ?>" class="btn btn-danger">Eliminar</a></td>
+						</tr>
+					<?php endwhile; ?>
+				</tbody>
+			</table>
+		</div>
+
+
+        <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+				<h2>Servicios Realizados a Clientes</h2>
+			</div>
+			<?php
+			$sqlServiciosClientes =
+				"SELECT Clientes.Nombre AS NombreCliente, Bicicletas.Modelo AS ModeloBicicleta, Servicios.Descripcion AS DescripcionServicio, Servicios.Fecha AS FechaServicio, Servicios.Precio AS PrecioServicio
+				FROM Servicios
+				INNER JOIN Bicicletas ON Servicios.ID_Bicicleta = Bicicletas.ID_Bicicleta
+				INNER JOIN Clientes ON Bicicletas.ID_Cliente = Clientes.ID_Cliente";
+			$resultServiciosClientes = $mysqli->query($sqlServiciosClientes);
+			?>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Nombre del Cliente</th>
+						<th>Modelo de la Bicicleta</th>
+						<th>Descripción del Servicio</th>
+						<th>Fecha</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php while ($row = $resultServiciosClientes->fetch_assoc()): ?>
+						<tr>
+							<td><?= htmlspecialchars($row['NombreCliente']) ?></td>
+							<td><?= htmlspecialchars($row['ModeloBicicleta']) ?></td>
+							<td><?= htmlspecialchars($row['DescripcionServicio']) ?></td>
+							<td><?= htmlspecialchars($row['FechaServicio']) ?></td>
+						</tr>
+					<?php endwhile; ?>
+				</tbody>
+			</table>
+		</div>
 
 
 <script>

@@ -1,11 +1,19 @@
+<?php
+require 'conexion.php';
+$sql = "SELECT ID_Bicicleta, Marca, Modelo, Tipo, Precio, stock 
+        FROM Bicicletas 
+        WHERE ID_Cliente IS NULL OR stock > 1";
+$resultado = $mysqli->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReparaBike - Clientes</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="icon" href="images/iconoBici.jpeg" type="image/jpeg">
-    <title>Registrar Bicicleta</title>
     <style>
         body {
             background-color: #f5f5f5;
@@ -61,58 +69,69 @@
     </style>
 </head>
 <body>
+
+<!-- Encabezado -->
 <div class="header">
     <div class="logo">
-        <a href="index.php">
-            <img src="images/iconoBici.jpeg" alt="Logo">
-        </a>
+    <a href="index.php">
+        <img src="images/iconoBici.jpeg" alt="Logo">
+    </a>
         <h1>ReparaBike</h1>
     </div>
     <div class="menu-toggle" id="menuToggle">&#9776;</div>
 </div>
+
+<!-- Menú desplegable -->
 <div class="menu" id="menu">
     <a href="bicicletas.php">Bicicletas</a>
     <a href="clientes.php">Clientes</a>
     <a href="servicios.php">Servicios</a>
     <a href="operaciones.php">Operaciones</a>
 </div>
+
+<!-- Contenido principal -->
+<div class="container mt-5">
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h2>Clientes</h2>
+				<a href="registrar.php" class="btn btn-primary boton">Añadir</a>
+			</div>
+			<?php
+			$sqlClientes = "SELECT ID_Cliente, Nombre, Telefono, Email, DNI FROM Clientes";
+			$resultClientes = $mysqli->query($sqlClientes);
+			?>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Teléfono</th>
+						<th>Email</th>
+						<th>DNI</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php while ($row = $resultClientes->fetch_assoc()): ?>
+						<tr>
+							<td><?= htmlspecialchars($row['Nombre']) ?></td>
+							<td><?= htmlspecialchars($row['Telefono']) ?></td>
+							<td><?= htmlspecialchars($row['Email']) ?></td>
+							<td><?= htmlspecialchars($row['DNI']) ?></td>
+							<td><a href="editarCliente.php?id=<?= $row['ID_Cliente'] ?>" class="btn btn-primary">Editar</a> <a href="eliminarCliente.php?id=<?= $row['ID_Cliente'] ?>" class="btn btn-danger">Eliminar</a></td>
+						</tr>
+					<?php endwhile; ?>
+				</tbody>
+			</table>
+		</div>
+
+
 <script>
     const menuToggle = document.getElementById('menuToggle');
     const menu = document.getElementById('menu');
+
     menuToggle.addEventListener('click', () => {
         menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
 </script>
-<div class="container">
-    <div class="form-container">
-        <?php
-        require 'conexion.php';
-
-        $marca = $_POST['marca'];
-        $modelo = $_POST['modelo'];
-        $tipo = $_POST['tipo'];
-        $precio = $_POST['precio'];
-        $stock = $_POST['stock'];
-        $id_cliente = !empty($_POST['id_cliente']) ? $_POST['id_cliente'] : null;
-
-        $sql = "INSERT INTO bicicletas (Marca, Modelo, Tipo, Precio, Stock, ID_Cliente) 
-                VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("sssiii", $marca, $modelo, $tipo, $precio, $stock, $id_cliente);
-
-        if ($stmt->execute()) {
-            $mensaje = "Bicicleta registrada con éxito.";
-            $clase = "success";
-        } else {
-            $mensaje = "Error al registrar la bicicleta.";
-            $clase = "danger";
-        }
-        ?>
-        <div class="text-center mt-5">
-            <div class="alert alert-<?= $clase ?>"><?= $mensaje ?></div>
-            <a href="bicicletas.php" class="btn btn-primary">Regresar</a>
-        </div>
-    </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
