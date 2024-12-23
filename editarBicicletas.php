@@ -19,10 +19,6 @@
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .logo {
-            display: flex;
-            align-items: center;
-        }
         .logo img {
             height: 50px;
             margin-right: 10px;
@@ -89,20 +85,28 @@
         require 'conexion.php';
 
         $id = $_GET['id'];
-        $sql = "SELECT * FROM bicicletas WHERE ID_Bicicleta = '$id'";
-        $resultado = $mysqli->query($sql);
+        $sql = "SELECT * FROM bicicletas WHERE ID_Bicicleta = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
         $row = $resultado->fetch_assoc();
+
+        if (!$row) {
+            echo "<p class='alert alert-danger'>No se encontró la bicicleta seleccionada.</p>";
+            exit;
+        }
         ?>
         <h1 class="text-center">Editar Bicicleta</h1>
         <form action="editarBicicletas2.php" method="post">
-            <input type="hidden" name="id" value="<?= $row['ID_Bicicleta'] ?>">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($row['ID_Bicicleta']) ?>">
             <div class="mb-3">
                 <label for="marca" class="form-label">Marca</label>
-                <input type="text" class="form-control" id="marca" name="marca" value="<?= $row['Marca'] ?>" required>
+                <input type="text" class="form-control" id="marca" name="marca" value="<?= htmlspecialchars($row['Marca']) ?>" required>
             </div>
             <div class="mb-3">
                 <label for="modelo" class="form-label">Modelo</label>
-                <input type="text" class="form-control" id="modelo" name="modelo" value="<?= $row['Modelo'] ?>" required>
+                <input type="text" class="form-control" id="modelo" name="modelo" value="<?= htmlspecialchars($row['Modelo']) ?>" required>
             </div>
             <div class="mb-3">
                 <label for="tipo" class="form-label">Tipo</label>
@@ -113,25 +117,11 @@
             </div>
             <div class="mb-3">
                 <label for="precio" class="form-label">Precio</label>
-                <input type="number" class="form-control" id="precio" name="precio" min="0" value="<?= $row['Precio'] ?>" required>
+                <input type="number" class="form-control" id="precio" name="precio" min="0" value="<?= htmlspecialchars($row['Precio']) ?>" required>
             </div>
             <div class="mb-3">
                 <label for="stock" class="form-label">Stock</label>
-                <input type="number" class="form-control" id="stock" name="stock" min="0" value="<?= $row['Stock'] ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="id_cliente" class="form-label">Seleccionar Cliente</label>
-                <select class="form-control" id="id_cliente" name="id_cliente">
-                    <option value="">-- Sin dueño --</option>
-                    <?php
-                    $sqlClientes = "SELECT id_cliente, Nombre FROM clientes";
-                    $resultadoClientes = $mysqli->query($sqlClientes);
-                    while ($cliente = $resultadoClientes->fetch_assoc()) {
-                        $selected = $row['ID_Cliente'] == $cliente['id_cliente'] ? 'selected' : '';
-                        echo "<option value='{$cliente['id_cliente']}' $selected>{$cliente['Nombre']}</option>";
-                    }
-                    ?>
-                </select>
+                <input type="number" class="form-control" id="stock" name="stock" min="0" value="<?= htmlspecialchars($row['stock']) ?>" required>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Actualizar</button>
