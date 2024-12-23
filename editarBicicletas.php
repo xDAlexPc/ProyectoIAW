@@ -19,6 +19,10 @@
             background-color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
         .logo img {
             height: 50px;
             margin-right: 10px;
